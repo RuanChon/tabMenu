@@ -7,6 +7,7 @@
       :default-openeds="['1']"
       active-text-color="#fff"
       v-loading="loading"
+      :style="loading ? 'min-height: 100vh !important;' : ''"
     >
       <template v-for="item in menus" :key="item.id">
         <!-- 判断二级菜单 -->
@@ -51,18 +52,30 @@ onMounted(() => {
 const getData = async () => {
   // 接口A
   const res_A = await Axios.get(
-    "https://6cxx9pggi4.execute-api.us-east-1.amazonaws.com/prod/mock/meeting-a/list"
+    "https://6cxx9pggi4.execute-api.us-east-1.amazonaws.com/prod/mock/meeting-a/list",
+    {
+      params: {
+        page_now: 1,
+        page_size: 20,
+      },
+    }
   )
   interface_A.value = JSON.parse(decryptAES(res_A.data))
 
   // 接口B
   const res_B = await Axios.get(
-    "https://6cxx9pggi4.execute-api.us-east-1.amazonaws.com/prod/mock/meeting-b/list"
+    "https://6cxx9pggi4.execute-api.us-east-1.amazonaws.com/prod/mock/meeting-b/list",
+    {
+      params: {
+        page_now: 1,
+        page_size: 20,
+      },
+    }
   )
   interface_B.value = JSON.parse(decryptAES(res_B.data))
 
-  // console.log("请求A返回", interface_A.value)
-  // console.log("请求B返回", interface_B.value)
+  console.log("请求A返回", interface_A.value)
+  console.log("请求B返回", interface_B.value)
 
   nextTick(() => {
     console.log("数据获取完了")
@@ -148,7 +161,7 @@ const delNaN = arr => {
   box-sizing: border-box;
 
   /deep/.el-menu {
-    min-height: 100vh !important;
+    // min-height: 100vh !important;
     background-color: #1b1e28 !important;
     overflow: hidden;
   }
